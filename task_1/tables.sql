@@ -37,11 +37,11 @@ CREATE TABLE Classifications(
     PRIMARY KEY (name));
 
 CREATE TABLE Classified(
-    student TEXT, 
-    branch TEXT, 
-    program TEXT,  
-    PRIMARY KEY (student), 
-    FOREIGN KEY (branch, program) REFERENCES Branches(name, program));
+    course TEXT, 
+    classification TEXT,   
+    PRIMARY KEY (course, classification), 
+    FOREIGN KEY (course) REFERENCES Courses(code),
+    FOREIGN KEY (classification) REFERENCES Classifications(name));
 
 CREATE TABLE MandatoryProgram(
     course TEXT,
@@ -65,17 +65,17 @@ CREATE TABLE RecommendedBranch(
     FOREIGN KEY (course) REFERENCES Courses(code),
     FOREIGN KEY (branch, program) REFERENCES Branches(name, program));
 
-CREATE TABLE Registerd(
+CREATE TABLE Registered(
     student TEXT, 
     course TEXT,  
     PRIMARY KEY (student, course), 
     FOREIGN KEY (student) REFERENCES Students(idnr),
-    FOREIGN KEY (course) REFERENCES LimitedCourses(code));
+    FOREIGN KEY (course) REFERENCES Courses(code));
 
 CREATE TABLE Taken(
     student TEXT, 
     course TEXT, 
-    grade INT, 
+    grade TEXT, 
     PRIMARY KEY (student, course), 
     FOREIGN KEY (student) REFERENCES Students(idnr),
     FOREIGN KEY (course) REFERENCES Courses(code));
