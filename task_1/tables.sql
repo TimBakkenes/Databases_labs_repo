@@ -20,7 +20,8 @@ CREATE TABLE Courses(
 
 CREATE TABLE LimitedCourses(
     code TEXT, 
-    capacity INT NOT NULL, 
+    capacity INT,
+    CHECK (capacity > 0), 
     PRIMARY KEY (code),
     FOREIGN KEY (code) REFERENCES Courses(code));
 
