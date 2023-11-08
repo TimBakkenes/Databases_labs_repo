@@ -4,6 +4,7 @@ CREATE TABLE Students(
     name TEXT NOT NULL, 
     login TEXT NOT NULL, 
     program TEXT NOT NULL,
+    UNIQUE (login),
     PRIMARY KEY (idnr));
 
 CREATE TABLE Branches (
