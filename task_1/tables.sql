@@ -77,7 +77,7 @@ CREATE TABLE Registered(
 CREATE TABLE Taken(
     student TEXT, 
     course TEXT, 
-    grade TEXT,
+    grade CHAR(1),
     CHECK (grade IN ('U','3','4','5')),
     PRIMARY KEY (student, course), 
     FOREIGN KEY (student) REFERENCES Students(idnr),
@@ -90,3 +90,4 @@ CREATE TABLE WaitingList(
     PRIMARY KEY (student, course), 
     FOREIGN KEY (student) REFERENCES Students(idnr),
     FOREIGN KEY (course) REFERENCES LimitedCourses(code));
+    
