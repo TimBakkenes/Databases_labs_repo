@@ -15,9 +15,29 @@ CREATE VIEW Registrations AS
     UNION
 
     SELECT student, course, 'waiting' AS status
-    FROM WaitingList
+    FROM WaitingList;
 
-PathToGraduation(student, totalCredits, mandatoryLeft, mathCredits, seminarCourses, qualified)
+CREATE VIEW PassedCourses AS
+    SELECT student, course, credits
+    FROM TAKEN, COURSES
+    WHERE (course = Courses.code AND TAKEN.grade != 'U');
 
+CREATE VIEW UnreadMandatory AS 
+    SELECT idnr as student, course
+    FROM Students, MandatoryProgram
+    WHERE (Students.program = MandatoryProgram.program)
 
+    UNION 
+
+    SELECT idnr as student, course
+    FROM Students, MandatoryBranch
+    WHERE (Students.program = MandatoryBranch.program)
+    
+    EXCEPT
+
+    SELECT student, course 
+    FROM PassedCourses;
+
+CREATE VIEW RecommendedCourses AS 
+    SELECT student, course, credits
 
