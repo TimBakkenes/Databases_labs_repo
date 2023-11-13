@@ -27,13 +27,13 @@ CREATE VIEW UnreadMandatory AS
     FROM Students, MandatoryProgram
     WHERE (Students.program = MandatoryProgram.program)
 
-    UNION 
+    UNION DISTINCT
 
     SELECT idnr as student, course
     FROM Students, MandatoryBranch
     WHERE (Students.program = MandatoryBranch.program)
     
-    EXCEPT
+    EXCEPT 
 
     SELECT student, course 
     FROM PassedCourses;
