@@ -30,7 +30,7 @@ SET client_min_messages TO NOTICE; -- More talk
 -- SELECT student, totalCredits, mandatoryLeft, mathCredits, seminarCourses, qualified FROM PathToGraduation ORDER BY student;
 
 -- Helper views for PathToGraduation (optional)
--- SELECT student, course, credits FROM PassedCourses ORDER BY (student, course);
+SELECT student, course, credits FROM PassedCourses ORDER BY (student, course);
 -- SELECT student, course FROM UnreadMandatory ORDER BY (student, course);
 -- SELECT student, course, credits FROM RecommendedCourses ORDER BY (student, course);
 
@@ -41,7 +41,18 @@ SET client_min_messages TO NOTICE; -- More talk
 
 
 
-SELECT Students.idnr, totalCredits, mandatoryLeft, mathCredits, seminarCourses
+SELECT 
+    Students.idnr, 
+    COALESCE(totalCredits, 0) AS totalCredits, 
+    COALESCE(mandatoryLeft, 0) AS mandatoryLeft, 
+    COALESCE(mathCredits, 0) AS mathCredits, 
+    COALESCE(seminarCourses, 0) AS seminarCourses, 
+    (COALESCE(totalCredits, 0) >= 10 
+        AND COALESCE(mandatoryLeft, 0) = 0 
+        AND COALESCE(mathCredits, 0) >= 20 
+        AND COALESCE(seminarCourses, 0) > 0) 
+    AS qualified
+
     FROM Students 
     LEFT JOIN 
     TotalCredits ON (Students.idnr = TotalCredits.student)
