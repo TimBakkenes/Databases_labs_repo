@@ -47,10 +47,22 @@ CREATE VIEW RecommendedCourses AS
     FROM RecommendedHelper
     INNER JOIN PassedCourses ON (RecommendedHelper.student = PassedCourses.student AND RecommendedHelper.course = PassedCourses.course);
 
-CREATE VIEW PathToGraduation AS
+CREATE VIEW TotalCredits AS
     SELECT student, SUM(credits) as totalCredits
     FROM PassedCourses
     GROUP BY student;
+
+CREATE VIEW MandatoryLeft AS
+    SELECT student, COUNT(course) as mandatoryLeft
+    FROM UnreadMandatory
+    GROUP BY student;
+
+
+CREATE VIEW PathToGraduation AS
+    SELECT TotalCredits.student, totalCredits, mandatoryLeft 
+    FROM TotalCredits 
+    FULL OUTER JOIN
+    MandatoryLeft ON (TotalCredits.student = MandatoryLeft.student);
     
     
 
