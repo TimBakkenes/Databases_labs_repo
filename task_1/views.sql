@@ -40,4 +40,6 @@ CREATE VIEW UnreadMandatory AS
 
 CREATE VIEW RecommendedCourses AS 
     SELECT student, course, credits
-
+    FROM RecommendedBranch, Students
+    LEFT OUTER JOIN PassedCourses 
+    ON (Students.program = RecommendedBranch.program AND PassedCourses.course = RecommendedBranch.course)

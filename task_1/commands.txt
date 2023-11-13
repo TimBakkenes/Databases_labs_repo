@@ -1,3 +1,4 @@
 psql -f "/Users/timbakkenes/VS_code_projects/Databases_labs_repo/task_1/runtests.sql" postgresql://postgres:postgres@127.0.0.1
 
 
+ &"c:\Program Files\PostgreSQL\16\bin\psql.exe" -f "C:\Users\axelg\OneDriveChalmers\Databaser\Databases_labs_repo\task_1\runtests.sql" postgresql://postgres:postgres@127.0.0.1
