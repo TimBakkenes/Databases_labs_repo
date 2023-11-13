@@ -38,6 +38,25 @@ CREATE VIEW UnreadMandatory AS
     SELECT student, course 
     FROM PassedCourses;
 
+CREATE VIEW RecommendedHelper AS 
+    SELECT Students.idnr AS student, course
+    FROM Students INNER JOIN RecommendedBranch ON (Students.program = RecommendedBranch.program);
+
 CREATE VIEW RecommendedCourses AS 
-    SELECT student, course, credits
+    SELECT RecommendedHelper.student AS student, RecommendedHelper.course, PassedCourses.credits
+    FROM RecommendedHelper
+    INNER JOIN PassedCourses ON (RecommendedHelper.student = PassedCourses.student AND RecommendedHelper.course = PassedCourses.course);
+
+CREATE VIEW PathToGraduation AS
+    SELECT student, SUM(credits) as totalCredits
+    FROM PassedCourses
+    GROUP BY student;
+    
+    
+
+
+    
+
+
+
 
