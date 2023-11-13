@@ -21,7 +21,7 @@ CREATE TABLE Courses(
 
 CREATE TABLE LimitedCourses(
     code TEXT, 
-    capacity INT,
+    capacity INT NOT NULL,
     CHECK (capacity > 0), 
     PRIMARY KEY (code),
     FOREIGN KEY (code) REFERENCES Courses(code));
@@ -77,7 +77,7 @@ CREATE TABLE Registered(
 CREATE TABLE Taken(
     student TEXT, 
     course TEXT, 
-    grade CHAR(1),
+    grade CHAR(1) NOT NULL,
     CHECK (grade IN ('U','3','4','5')),
     PRIMARY KEY (student, course), 
     FOREIGN KEY (student) REFERENCES Students(idnr),
