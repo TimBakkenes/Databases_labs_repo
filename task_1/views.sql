@@ -71,7 +71,7 @@ CREATE VIEW SeminarCourses AS
 
 CREATE VIEW PathToGraduation AS
     SELECT 
-    Students.idnr, 
+    Students.idnr AS student, 
     COALESCE(totalCredits, 0) AS totalCredits, 
     COALESCE(mandatoryLeft, 0) AS mandatoryLeft, 
     COALESCE(mathCredits, 0) AS mathCredits, 
