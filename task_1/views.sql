@@ -57,6 +57,17 @@ CREATE VIEW MandatoryLeft AS
     FROM UnreadMandatory
     GROUP BY student;
 
+CREATE VIEW MathCredits AS
+    SELECT student, SUM(credits) AS mathCredits
+    FROM PassedCourses, Classified
+    WHERE (PassedCourses.course = Classified.course AND Classified.classification = 'math')
+    GROUP BY student;
+
+CREATE VIEW SeminarCourses AS 
+    SELECT student, COUNT(PassedCourses.course) AS seminarCourses
+    FROM PassedCourses, Classified
+    WHERE (PassedCourses.course = Classified.course AND Classified.classification = 'seminar')
+    GROUP BY student;
 
 CREATE VIEW PathToGraduation AS
     SELECT TotalCredits.student, totalCredits, mandatoryLeft 

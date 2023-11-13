@@ -31,7 +31,7 @@ SET client_min_messages TO NOTICE; -- More talk
 
 -- Helper views for PathToGraduation (optional)
 -- SELECT student, course, credits FROM PassedCourses ORDER BY (student, course);
-SELECT student, course FROM UnreadMandatory ORDER BY (student, course);
+-- SELECT student, course FROM UnreadMandatory ORDER BY (student, course);
 -- SELECT student, course, credits FROM RecommendedCourses ORDER BY (student, course);
 
 -- SELECT student, p1, p2, course FROM RecommendedCourses ORDER BY (student, course);
@@ -39,7 +39,15 @@ SELECT student, course FROM UnreadMandatory ORDER BY (student, course);
 
 -- Life-hack: When working on a new view you can write it as a query here (without creating a view) and when it works just add CREATE VIEW and put it in views.sql
 
-SELECT TotalCredits.student, totalCredits, mandatoryLeft 
-    FROM TotalCredits 
-    NATURAL FULL OUTER JOIN
-    MandatoryLeft;
+
+
+SELECT Students.idnr, totalCredits, mandatoryLeft, mathCredits, seminarCourses
+    FROM Students 
+    LEFT JOIN 
+    TotalCredits ON (Students.idnr = TotalCredits.student)
+    LEFT JOIN
+    MandatoryLeft ON (Students.idnr = MandatoryLeft.student)
+    LEFT JOIN
+    MathCredits ON (Students.idnr = MathCredits.student)
+    LEFT JOIN
+    SeminarCourses ON (Students.idnr = SeminarCourses.student);
