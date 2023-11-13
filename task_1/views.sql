@@ -70,10 +70,27 @@ CREATE VIEW SeminarCourses AS
     GROUP BY student;
 
 CREATE VIEW PathToGraduation AS
-    SELECT TotalCredits.student, totalCredits, mandatoryLeft 
-    FROM TotalCredits 
-    FULL OUTER JOIN
-    MandatoryLeft ON (TotalCredits.student = MandatoryLeft.student);
+    SELECT 
+    Students.idnr, 
+    COALESCE(totalCredits, 0) AS totalCredits, 
+    COALESCE(mandatoryLeft, 0) AS mandatoryLeft, 
+    COALESCE(mathCredits, 0) AS mathCredits, 
+    COALESCE(seminarCourses, 0) AS seminarCourses, 
+    (COALESCE(totalCredits, 0) >= 10 
+        AND COALESCE(mandatoryLeft, 0) = 0 
+        AND COALESCE(mathCredits, 0) >= 20 
+        AND COALESCE(seminarCourses, 0) > 0) 
+    AS qualified
+
+    FROM Students 
+    LEFT JOIN 
+    TotalCredits ON (Students.idnr = TotalCredits.student)
+    LEFT JOIN
+    MandatoryLeft ON (Students.idnr = MandatoryLeft.student)
+    LEFT JOIN
+    MathCredits ON (Students.idnr = MathCredits.student)
+    LEFT JOIN
+    SeminarCourses ON (Students.idnr = SeminarCourses.student);
     
     
 
