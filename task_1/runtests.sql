@@ -30,35 +30,11 @@ SET client_min_messages TO NOTICE; -- More talk
 -- SELECT student, totalCredits, mandatoryLeft, mathCredits, seminarCourses, qualified FROM PathToGraduation ORDER BY student;
 
 -- Helper views for PathToGraduation (optional)
-SELECT student, course, credits FROM PassedCourses ORDER BY (student, course);
+-- SELECT student, course, credits FROM PassedCourses ORDER BY (student, course);
 -- SELECT student, course FROM UnreadMandatory ORDER BY (student, course);
--- SELECT student, course, credits FROM RecommendedCourses ORDER BY (student, course);
+SELECT student, course, credits FROM RecommendedCourses ORDER BY (student, course);
 
--- SELECT student, p1, p2, course FROM RecommendedCourses ORDER BY (student, course);
 
 
 -- Life-hack: When working on a new view you can write it as a query here (without creating a view) and when it works just add CREATE VIEW and put it in views.sql
 
-
-
-SELECT 
-    Students.idnr, 
-    COALESCE(totalCredits, 0) AS totalCredits, 
-    COALESCE(mandatoryLeft, 0) AS mandatoryLeft, 
-    COALESCE(mathCredits, 0) AS mathCredits, 
-    COALESCE(seminarCourses, 0) AS seminarCourses, 
-    (COALESCE(totalCredits, 0) >= 10 
-        AND COALESCE(mandatoryLeft, 0) = 0 
-        AND COALESCE(mathCredits, 0) >= 20 
-        AND COALESCE(seminarCourses, 0) > 0) 
-    AS qualified
-
-    FROM Students 
-    LEFT JOIN 
-    TotalCredits ON (Students.idnr = TotalCredits.student)
-    LEFT JOIN
-    MandatoryLeft ON (Students.idnr = MandatoryLeft.student)
-    LEFT JOIN
-    MathCredits ON (Students.idnr = MathCredits.student)
-    LEFT JOIN
-    SeminarCourses ON (Students.idnr = SeminarCourses.student);

@@ -29,9 +29,9 @@ CREATE VIEW UnreadMandatory AS
 
     UNION 
 
-    SELECT idnr as student, course
-    FROM Students, MandatoryBranch
-    WHERE (Students.program = MandatoryBranch.program)
+    SELECT student, course
+    FROM StudentBranches, MandatoryBranch
+    WHERE (StudentBranches.branch = MandatoryBranch.branch AND StudentBranches.program = MandatoryBranch.program)
     
     EXCEPT
 
@@ -46,6 +46,11 @@ CREATE VIEW RecommendedCourses AS
     SELECT RecommendedHelper.student AS student, RecommendedHelper.course, PassedCourses.credits
     FROM RecommendedHelper
     INNER JOIN PassedCourses ON (RecommendedHelper.student = PassedCourses.student AND RecommendedHelper.course = PassedCourses.course);
+
+CREATE VIEW AggregatedRecommendedCourses AS 
+    SELECT student, SUM(credits) as recommendedCredits
+    FROM RecommendedCourses
+    GROUP BY student;
 
 CREATE VIEW TotalCredits AS
     SELECT student, SUM(credits) as totalCredits
@@ -76,11 +81,12 @@ CREATE VIEW PathToGraduation AS
     COALESCE(mandatoryLeft, 0) AS mandatoryLeft, 
     COALESCE(mathCredits, 0) AS mathCredits, 
     COALESCE(seminarCourses, 0) AS seminarCourses, 
-    (COALESCE(totalCredits, 0) >= 10 
+    (COALESCE(recommendedCredits, 0) >= 10 
         AND COALESCE(mandatoryLeft, 0) = 0 
         AND COALESCE(mathCredits, 0) >= 20 
         AND COALESCE(seminarCourses, 0) > 0) 
     AS qualified
+    
 
     FROM Students 
     LEFT JOIN 
@@ -90,7 +96,9 @@ CREATE VIEW PathToGraduation AS
     LEFT JOIN
     MathCredits ON (Students.idnr = MathCredits.student)
     LEFT JOIN
-    SeminarCourses ON (Students.idnr = SeminarCourses.student);
+    SeminarCourses ON (Students.idnr = SeminarCourses.student)
+    LEFT JOIN
+    AggregatedRecommendedCourses ON (Students.idnr = AggregatedRecommendedCourses.student);
     
     
 
