@@ -3,21 +3,19 @@ CREATE TABLE Department(
     name TEXT,
     abbreviation TEXT,
     PRIMARY KEY (name),
-    UNIQUE (abbreviation);
-)
+    UNIQUE (abbreviation));
+
+CREATE TABLE Program(
+    name TEXT, 
+    abbreviation TEXT, 
+    PRIMARY KEY(name));
 
 CREATE TABLE Hosted(
     department,
     program,
     PRIMARY KEY (department, program)
     FOREIGN KEY (department) REFERENCES Department(name),
-    FOREIGN KEY (program) REFERENCES Program(name);
-)
-
-Hosted(department, program)
-	department → Department.name
-	program → Program.name
-
+    FOREIGN KEY (program) REFERENCES Program(name));
 
 CREATE TABLE Students(
     idnr CHAR(10), 
@@ -45,6 +43,13 @@ CREATE TABLE LimitedCourses(
     CHECK (capacity > 0), 
     PRIMARY KEY (code),
     FOREIGN KEY (code) REFERENCES Courses(code));
+
+CREATE TABLE Prerequisites(
+    unlocking TEXT,
+    unlocked TEXT,
+    PRIMARY KEY(unlocking, unlocked),
+    FOREIGN KEY(unlocking) REFERENCES(Courses(code))
+    FOREIGN KEY(unlocked) REFERENCES(Courses(code)));
 
 CREATE TABLE StudentBranches(
     student TEXT, 
