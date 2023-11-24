@@ -1,13 +1,13 @@
 
 CREATE TABLE Department(
-    name TEXT,
-    abbreviation TEXT,
+    name TEXT NOT NULL,
+    abbreviation TEXT NOT NULL,
     PRIMARY KEY (name),
     UNIQUE (abbreviation));
 
 CREATE TABLE Program(
-    name TEXT, 
-    abbreviation TEXT, 
+    name TEXT NOT NULL, 
+    abbreviation TEXT NOT NULL, 
     PRIMARY KEY(name));
 
 CREATE TABLE Hosted(
@@ -28,14 +28,16 @@ CREATE TABLE Students(
 CREATE TABLE Branches (
     name TEXT, 
     program TEXT,
-    PRIMARY KEY (name, program));
+    PRIMARY KEY (name, program)
+    FOREIGN KEY (program) REFERENCES Program(name));
 
 CREATE TABLE Courses(
     code TEXT, 
     name TEXT NOT NULL, 
     credits REAL NOT NULL, 
     department TEXT NOT NULL,
-    PRIMARY KEY (code));
+    PRIMARY KEY (code)
+    FOREIGN KEY (department) REFERENCES Department(name));
 
 CREATE TABLE LimitedCourses(
     code TEXT, 
@@ -56,7 +58,7 @@ CREATE TABLE StudentBranches(
     branch TEXT NOT NULL, 
     program TEXT NOT NULL,
     PRIMARY KEY (student),
-    FOREIGN KEY (student) REFERENCES Students(idnr),
+    FOREIGN KEY (student, program) REFERENCES Students(idnr, program),
     FOREIGN KEY (branch, program) REFERENCES Branches(name, program));
 
 CREATE TABLE Classifications(
@@ -74,7 +76,8 @@ CREATE TABLE MandatoryProgram(
     course TEXT,
     program TEXT,
     PRIMARY KEY (course, program),
-    FOREIGN KEY (course) REFERENCES Courses(code));
+    FOREIGN KEY (course) REFERENCES Courses(code)
+    FOREIGN KEY (program) REFERENCES Program(name));
 
 CREATE TABLE MandatoryBranch(
     course TEXT, 
