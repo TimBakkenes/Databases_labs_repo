@@ -1,4 +1,24 @@
 
+CREATE TABLE Department(
+    name TEXT,
+    abbreviation TEXT,
+    PRIMARY KEY (name),
+    UNIQUE (abbreviation);
+)
+
+CREATE TABLE Hosted(
+    department,
+    program,
+    PRIMARY KEY (department, program)
+    FOREIGN KEY (department) REFERENCES Department(name),
+    FOREIGN KEY (program) REFERENCES Program(name);
+)
+
+Hosted(department, program)
+	department → Department.name
+	program → Program.name
+
+
 CREATE TABLE Students(
     idnr CHAR(10), 
     name TEXT NOT NULL, 
