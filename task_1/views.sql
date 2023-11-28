@@ -39,8 +39,8 @@ CREATE VIEW UnreadMandatory AS
     FROM PassedCourses;
 
 CREATE VIEW RecommendedHelper AS 
-    SELECT student, course
-    FROM StudentBranches INNER JOIN RecommendedBranch ON (StudentBranches.program = RecommendedBranch.program AND StudentBranches.branch = RecommendedBranch.branch);
+    SELECT Students.idnr AS student, course
+    FROM Students INNER JOIN RecommendedBranch ON (Students.program = RecommendedBranch.program);
 
 CREATE VIEW RecommendedCourses AS 
     SELECT RecommendedHelper.student AS student, RecommendedHelper.course, PassedCourses.credits
@@ -73,6 +73,7 @@ CREATE VIEW SeminarCourses AS
     FROM PassedCourses, Classified
     WHERE (PassedCourses.course = Classified.course AND Classified.classification = 'seminar')
     GROUP BY student;
+
 
 CREATE VIEW PathToGraduation AS
     SELECT 
