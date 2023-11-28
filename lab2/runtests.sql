@@ -15,11 +15,14 @@ SET client_min_messages TO NOTICE; -- More talk
 -- \ir is for include relative, it will run files in the same directory as this file
 -- Note that these are not SQL statements but rather Postgres commands (no terminating semicolon). 
 \ir tables.sql
--- \ir tim.sql
-\ir inserts.sql
 \ir views.sql
+\ir tim.sql
+\ir inserts.sql
 
-SELECT capacity FROM LimitedCourses WHERE (LimitedCourses.code = "CCC222");
+SELECT * FROM Registrations;
+
+
+-- SELECT SUM(capacity) FROM LimitedCourses WHERE code =  'CCC333';
 
 -- Tests various queries from the assignment, uncomment these as you make progress
 -- SELECT idnr, name, login, program, branch FROM BasicInformation ORDER BY idnr;
@@ -34,6 +37,6 @@ SELECT capacity FROM LimitedCourses WHERE (LimitedCourses.code = "CCC222");
 -- SELECT student, course, credits FROM PassedCourses ORDER BY (student, course);
 -- SELECT student, course FROM UnreadMandatory ORDER BY (student, course);
 -- SELECT student, course, credits FROM RecommendedCourses ORDER BY (student, course);
-SELECT * FROM PathToGraduation;
+-- SELECT * FROM PathToGraduation;
 -- Life-hack: When working on a new view you can write it as a query here (without creating a view) and when it works just add CREATE VIEW and put it in views.sql
 
