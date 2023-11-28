@@ -17,6 +17,8 @@ CREATE VIEW Registrations AS
     SELECT student, course, 'waiting' AS status
     FROM WaitingList;
 
+
+
 CREATE VIEW PassedCourses AS
     SELECT student, course, credits
     FROM TAKEN, COURSES
