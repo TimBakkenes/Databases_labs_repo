@@ -1,3 +1,12 @@
+INSERT INTO Program VALUES ('Prog1', 'P1');
+INSERT INTO Program VALUES ('Prog2', 'P2');
+
+INSERT INTO Department VALUES ('Dep1', 'D1');
+INSERT INTO Department VALUES ('Dep2', 'D2');
+
+INSERT INTO Hosted VALUES ('Dep2', 'Prog2');
+INSERT INTO Hosted VALUES ('Dep2', 'Prog1');
+
 INSERT INTO Branches VALUES ('B1','Prog1');
 INSERT INTO Branches VALUES ('B2','Prog1');
 INSERT INTO Branches VALUES ('B1','Prog2');
@@ -14,6 +23,8 @@ INSERT INTO Courses VALUES ('CCC222','C2',20,'Dep1');
 INSERT INTO Courses VALUES ('CCC333','C3',30,'Dep1');
 INSERT INTO Courses VALUES ('CCC444','C4',60,'Dep1');
 INSERT INTO Courses VALUES ('CCC555','C5',50,'Dep1');
+
+INSERT INTO Prerequisites VALUES ('CCC555', 'CCC111');
 
 INSERT INTO LimitedCourses VALUES ('CCC222',1);
 INSERT INTO LimitedCourses VALUES ('CCC333',2);
