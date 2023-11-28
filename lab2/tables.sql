@@ -5,39 +5,39 @@ CREATE TABLE Department(
    UNIQUE (abbreviation));
 
 CREATE TABLE Program(
-   name TEXT NOT NULL,
-   abbreviation TEXT NOT NULL,
-   PRIMARY KEY (name));
+    name TEXT NOT NULL, 
+    abbreviation TEXT NOT NULL, 
+    PRIMARY KEY (name));
 
 CREATE TABLE Hosted(
-   department TEXT,
-   program TEXT,
-   PRIMARY KEY (department, program),
-   FOREIGN KEY (department) REFERENCES Department(name),
-   FOREIGN KEY (program) REFERENCES Program(name));
+    department TEXT,
+    program TEXT,
+    PRIMARY KEY (department, program),
+    FOREIGN KEY (department) REFERENCES Department(name),
+    FOREIGN KEY (program) REFERENCES Program(name));
 
 CREATE TABLE Students(
-   idnr CHAR(10),
-   name TEXT NOT NULL,
-   login TEXT NOT NULL,
-   program TEXT NOT NULL,
-   UNIQUE (idnr, program),
-   UNIQUE (login),
-   PRIMARY KEY (idnr));
+    idnr CHAR(10), 
+    name TEXT NOT NULL, 
+    login TEXT NOT NULL, 
+    program TEXT NOT NULL,
+    UNIQUE (idnr, program),
+    UNIQUE (login),
+    PRIMARY KEY (idnr));
 
 CREATE TABLE Branches (
-   name TEXT,
-   program TEXT,
-   PRIMARY KEY (name, program),
-   FOREIGN KEY (program) REFERENCES Program(name));
+    name TEXT, 
+    program TEXT,
+    PRIMARY KEY (name, program),
+    FOREIGN KEY (program) REFERENCES Program(name));
 
 CREATE TABLE Courses(
-   code TEXT,
-   name TEXT NOT NULL,
-   credits REAL NOT NULL,
-   department TEXT NOT NULL,
-   PRIMARY KEY (code),
-   FOREIGN KEY (department) REFERENCES Department(name));
+    code TEXT, 
+    name TEXT NOT NULL, 
+    credits REAL NOT NULL, 
+    department TEXT NOT NULL,
+    PRIMARY KEY (code),
+    FOREIGN KEY (department) REFERENCES Department(name));
 
 CREATE TABLE LimitedCourses(
    code TEXT,
@@ -47,11 +47,11 @@ CREATE TABLE LimitedCourses(
    FOREIGN KEY (code) REFERENCES Courses(code));
 
 CREATE TABLE Prerequisites(
-   unlocking TEXT,
-   unlocked TEXT,
-   PRIMARY KEY(unlocking, unlocked),
-   FOREIGN KEY(unlocking) REFERENCES Courses(code),
-   FOREIGN KEY(unlocked) REFERENCES Courses(code));
+    unlocking TEXT,
+    unlocked TEXT,
+    PRIMARY KEY(unlocking, unlocked),
+    FOREIGN KEY(unlocking) REFERENCES Courses(code),
+    FOREIGN KEY(unlocked) REFERENCES Courses(code));
 
 CREATE TABLE StudentBranches(
    student TEXT,
@@ -73,11 +73,11 @@ CREATE TABLE Classified(
    FOREIGN KEY (classification) REFERENCES Classifications(name));
 
 CREATE TABLE MandatoryProgram(
-   course TEXT,
-   program TEXT,
-   PRIMARY KEY (course, program),
-   FOREIGN KEY (course) REFERENCES Courses(code),
-   FOREIGN KEY (program) REFERENCES Program(name));
+    course TEXT,
+    program TEXT,
+    PRIMARY KEY (course, program),
+    FOREIGN KEY (course) REFERENCES Courses(code),
+    FOREIGN KEY (program) REFERENCES Program(name));
 
 CREATE TABLE MandatoryBranch(
    course TEXT,
