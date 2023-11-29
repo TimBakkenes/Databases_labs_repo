@@ -16,18 +16,18 @@ SET client_min_messages TO NOTICE; -- More talk
 -- Note that these are not SQL statements but rather Postgres commands (no terminating semicolon). 
 \ir tables.sql
 \ir views.sql
-\ir tim.sql
+\ir triggers.sql
 \ir inserts.sql
 
-
+SELECT * FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
 
 -- SELECT unlocking FROM Prerequisites WHERE (unlocked = 'CCC444');
 
 -- SELECT course FROM TAKEN WHERE (student = '4444444444');
 
-SELECT unlocking FROM Prerequisites WHERE (unlocked = 'CCC444') AND unlocking NOT IN (SELECT course FROM TAKEN WHERE (student = '4444444444'));
 
-SELECT * FROM Registrations;
+
+
 
 
 -- SELECT SUM(capacity) FROM LimitedCourses WHERE code =  'CCC333';

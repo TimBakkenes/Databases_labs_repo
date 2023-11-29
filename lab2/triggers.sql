@@ -1,4 +1,4 @@
-CREATE FUNCTION course_filled() RETURNS trigger AS $course_filled$
+CREATE FUNCTION insert_registrations() RETURNS trigger AS $insert_registrations$
     DECLARE cap INT;
     DECLARE reg INT;
     DECLARE num_waiting INT;
@@ -46,9 +46,44 @@ CREATE FUNCTION course_filled() RETURNS trigger AS $course_filled$
 
         RETURN NEW;
     END;
-$course_filled$ LANGUAGE plpgsql;
+$insert_registrations$ LANGUAGE plpgsql;
 
-CREATE TRIGGER course_filled  
+CREATE TRIGGER insert_registrations 
     INSTEAD OF INSERT ON Registrations
-    FOR EACH ROW EXECUTE PROCEDURE course_filled();
+    FOR EACH ROW EXECUTE PROCEDURE insert_registrations();
 
+
+
+
+
+
+CREATE FUNCTION delete_registrations() RETURNS trigger AS $delete_registrations$
+    DECLARE cap INT;
+    DECLARE reg INT;
+    DECLARE num_waiting INT;
+    DECLARE stat TEXT;
+    BEGIN
+
+        SELECT COUNT(*) INTO reg
+             FROM Registered
+             WHERE course = NEW.course;
+
+        IF (EXISTS (SELECT * FROM Registrations WHERE course=OLD.course AND student = OLD.student)) 
+        THEN 
+            SELECT status INTO stat FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
+            
+            IF (stat = 'registered')
+            THEN
+                RAISE EXCEPTION 'howeigjn';
+
+            END IF;
+
+        END IF;
+
+        RETURN OLD;
+    END;
+$delete_registrations$ LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_registrations 
+    INSTEAD OF DELETE ON Registrations
+    FOR EACH ROW EXECUTE PROCEDURE delete_registrations();
