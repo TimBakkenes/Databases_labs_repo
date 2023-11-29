@@ -19,6 +19,14 @@ SET client_min_messages TO NOTICE; -- More talk
 \ir tim.sql
 \ir inserts.sql
 
+
+
+-- SELECT unlocking FROM Prerequisites WHERE (unlocked = 'CCC444');
+
+-- SELECT course FROM TAKEN WHERE (student = '4444444444');
+
+SELECT unlocking FROM Prerequisites WHERE (unlocked = 'CCC444') AND unlocking NOT IN (SELECT course FROM TAKEN WHERE (student = '4444444444'));
+
 SELECT * FROM Registrations;
 
 
