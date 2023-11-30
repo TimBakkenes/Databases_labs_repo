@@ -24,17 +24,14 @@ CREATE FUNCTION insert_registrations() RETURNS trigger AS $insert_registrations$
                 INSERT INTO Registered VALUES (New.student, New.course);
 
             ELSE
-                SELECT SUM(capacity) INTO cap FROM LimitedCourses WHERE code = NEW.course;
+                SELECT capacity INTO cap FROM LimitedCourses WHERE code = NEW.course;
 
                 IF (cap > reg)
                 THEN
                     INSERT INTO Registered VALUES (New.student, New.course);
 
                 ELSE
-                    SELECT COUNT(*) INTO num_waiting
-                        FROM WaitingList
-                        WHERE course = NEW.course;
-
+                    SELECT COUNT(*) INTO num_waiting FROM WaitingList WHERE course = NEW.course;
                     INSERT INTO WaitingList VALUES (New.student, New.course, num_waiting + 1);
 
                 END IF;   
@@ -61,25 +58,56 @@ CREATE FUNCTION delete_registrations() RETURNS trigger AS $delete_registrations$
     DECLARE cap INT;
     DECLARE reg INT;
     DECLARE num_waiting INT;
+    DECLARE pos INT;
     DECLARE stat TEXT;
     BEGIN
-
+        
         SELECT COUNT(*) INTO reg
              FROM Registered
-             WHERE course = NEW.course;
-
+             WHERE course = OLD.course;
+        
         IF (EXISTS (SELECT * FROM Registrations WHERE course=OLD.course AND student = OLD.student)) 
         THEN 
-            SELECT status INTO stat FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
+            SELECT status INTO stat FROM Registrations WHERE student = OLD.student AND course = OLD.course;
             
             IF (stat = 'registered')
             THEN
-                RAISE EXCEPTION 'howeigjn';
 
+                IF (NOT EXISTS (SELECT * FROM LimitedCourses WHERE code = OLD.course))
+                    THEN
+
+                    DELETE FROM Registered WHERE student = OLD.student AND course = OLD.course;
+                    
+                ELSE
+
+                    DELETE FROM Registered WHERE student = OLD.student AND course = OLD.course;
+                    SELECT capacity INTO cap FROM LimitedCourses WHERE code = OLD.course;
+
+                    IF (cap > reg - 1)
+                        THEN
+
+                        INSERT INTO Registered SELECT student, course FROM WaitingList WHERE position = 1;
+                        DELETE FROM WaitingList WHERE position = 1;
+                        UPDATE WaitingList SET position = position-1 WHERE course = OLD.course AND position > 1;
+                        
+                    END IF;
+                END IF;
+
+            ELSE
+
+                SELECT position INTO pos
+                    FROM WaitingList
+                    WHERE course = OLD.course AND student = OLD.student;
+
+                DELETE FROM WaitingList WHERE student = OLD.student AND course = OLD.course;
+                UPDATE WaitingList SET position = position-1 WHERE course = OLD.course AND position > pos;     
+            
             END IF;
+        
+        ELSE
+            RAISE EXCEPTION 'NOT ON WAITINGLIST OR REGISTERED';
 
         END IF;
-
         RETURN OLD;
     END;
 $delete_registrations$ LANGUAGE plpgsql;

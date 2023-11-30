@@ -67,4 +67,15 @@ INSERT INTO Registrations VALUES('4444444444', 'CCC444', '-');
 INSERT INTO Registrations VALUES('4444444444', 'CCC333', '-');
 INSERT INTO Registrations VALUES('5555555555', 'CCC333', '-');
 
+--DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
+
+INSERT INTO Registrations VALUES('5555555555', 'CCC222', '-');
+INSERT INTO Registrations VALUES('4444444444', 'CCC222', '-');
+INSERT INTO Registrations VALUES('3333333333', 'CCC222', '-');
+INSERT INTO Registrations VALUES('6666666666', 'CCC222', '-');
+
+DELETE FROM Registrations WHERE student = '4444444444' AND course = 'CCC222';
+
+DELETE FROM Registrations WHERE student = '1111111111' AND course = 'CCC222';
+
 DELETE FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';

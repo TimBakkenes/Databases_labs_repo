@@ -19,7 +19,11 @@ SET client_min_messages TO NOTICE; -- More talk
 \ir triggers.sql
 \ir inserts.sql
 
-SELECT * FROM Registrations WHERE student = '2222222222' AND course = 'CCC222';
+SELECT * FROM Registrations;
+
+SELECT * FROM WaitingList WHERE course ='CCC222';
+
+SELECT * FROM LimitedCourses;
 
 -- SELECT unlocking FROM Prerequisites WHERE (unlocked = 'CCC444');
 
