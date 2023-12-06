@@ -13,7 +13,12 @@ CREATE FUNCTION insert_registrations() RETURNS trigger AS $insert_registrations$
                 AND 
                 unlocking NOT IN (SELECT course FROM PassedCourses WHERE (student = NEW.student))))
         THEN
-            RAISE EXCEPTION 'test2';
+            RAISE EXCEPTION 'Course prerequisites not met';
+        END IF;
+
+        IF (EXISTS (SELECT course FROM PassedCourses WHERE (course= NEW.course AND student = New.student) ))
+        THEN
+            RAISE EXCEPTION 'Student has already passed course';
         END IF;
 
         IF (NOT EXISTS (SELECT * FROM Registrations WHERE course=NEW.course AND student = New.student)) 
@@ -37,7 +42,7 @@ CREATE FUNCTION insert_registrations() RETURNS trigger AS $insert_registrations$
                 END IF;   
             END IF;
         ELSE
-            RAISE EXCEPTION 'test1';
+            RAISE EXCEPTION 'Student already registered or on waitinglist';
         
         END IF;
 
@@ -105,7 +110,7 @@ CREATE FUNCTION delete_registrations() RETURNS trigger AS $delete_registrations$
             END IF;
         
         ELSE
-            RAISE EXCEPTION 'NOT ON WAITINGLIST OR REGISTERED';
+            RAISE EXCEPTION 'Not on waitinglist or registered';
 
         END IF;
         RETURN OLD;
