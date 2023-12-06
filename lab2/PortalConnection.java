@@ -86,7 +86,29 @@ public class PortalConnection {
         
         try(PreparedStatement st = conn.prepareStatement(
             // replace this with something more useful
-            "SELECT jsonb_build_object('student',idnr,'name',name) AS jsondata FROM BasicInformation WHERE idnr=?"
+            "SELECT jsonb_build_object(\n" + //
+                "    'student', idnr,\n" + //
+                "    'name', name,\n" + //
+                "    'login', login,\n" + //
+                "    'program', program,\n" + //
+                "    'branch', branch,\n" + //
+                "    'finished', (SELECT COALESCE(jsonb_agg(jsonb_build_object(\n" + //
+                "        'course', name,\n" + //
+                "        'code', course,\n" + //
+                "        'credits', credits,\n" + //
+                "        'grade', grade)), '[]') FROM Taken, Courses WHERE (Taken.student = BasicInformation.idnr AND Taken.course = Courses.code)),\n" + //
+                "    \n" + //
+                "    'registered', (SELECT COALESCE(jsonb_agg(jsonb_build_object(\n" + //
+                "        'course', name,\n" + //
+                "        'code', course,\n" + //
+                "        'status', status)), '[]') FROM Registrations, Courses WHERE (Registrations.student = BasicInformation.idnr AND Registrations.course = Courses.code)),\n" + //
+                "\n" + //
+                "    'seminarCourses', (SELECT seminarCourses FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
+                "    'mathCredits', (SELECT mathCredits FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
+                "    'totalCredits', (SELECT totalCredits FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
+                "    'canGraduate', (SELECT qualified FROM PathToGraduation WHERE (student = BasicInformation.idnr))\n" + //
+                "    \n" + //
+                "    ) AS jsondata FROM BasicInformation WHERE idnr=?;"
             );){
             
             st.setString(1, student);
