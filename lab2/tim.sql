@@ -23,3 +23,4 @@ $course_filled$ LANGUAGE plpgsql;
 CREATE TRIGGER course_filled 
    INSTEAD OF INSERT ON Registrations
    FOR EACH ROW EXECUTE PROCEDURE course_filled();
+
