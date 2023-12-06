@@ -32,7 +32,7 @@ CREATE TABLE Branches (
     FOREIGN KEY (program) REFERENCES Program(name));
 
 CREATE TABLE Courses(
-    code TEXT, 
+    code CHAR(6), 
     name TEXT NOT NULL, 
     credits REAL NOT NULL, 
     department TEXT NOT NULL,
