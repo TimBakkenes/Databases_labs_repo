@@ -62,7 +62,6 @@ CREATE TRIGGER insert_registrations
 CREATE FUNCTION delete_registrations() RETURNS trigger AS $delete_registrations$
     DECLARE cap INT;
     DECLARE reg INT;
-    DECLARE num_waiting INT;
     DECLARE pos INT;
     DECLARE stat TEXT;
     BEGIN
@@ -73,6 +72,7 @@ CREATE FUNCTION delete_registrations() RETURNS trigger AS $delete_registrations$
         
         IF (EXISTS (SELECT * FROM Registrations WHERE course=OLD.course AND student = OLD.student)) 
         THEN 
+
             SELECT status INTO stat FROM Registrations WHERE student = OLD.student AND course = OLD.course;
             
             IF (stat = 'registered')
