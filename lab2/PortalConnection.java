@@ -38,9 +38,17 @@ public class PortalConnection {
     // Register a student on a course, returns a tiny JSON document (as a String)
     public String register(String student, String courseCode){
 
-      try (Connection conn = DriveManager.PortalConnection("1", "2", "3")){
-      
-      
+        try (PreparedStatement prst = conn.prepareStatement("INSERT INTO Registrations VALUES(?, ?);")){
+            String stu = student;
+            String code = courseCode;
+
+            prst.setString(1,stu);
+            prst.setString(2,code);
+            prst.executeUpdate();
+            
+            return "{'success':true}";
+
+            
       
       // Here's a bit of useful code, use it or delete it 
       } catch (SQLException e) {
