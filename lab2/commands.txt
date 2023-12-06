@@ -1,1 +1,3 @@
 psql -f "/Users/timbakkenes/VS_code_projects/Databases_labs_repo/lab2/runtests.sql" postgresql://postgres:postgres@127.0.0.1
+
+psql -f "/Users/timbakkenes/VS_code_projects/Databases_labs_repo/lab2/test.sql" postgresql://postgres:postgres@127.0.0.1

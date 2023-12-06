@@ -51,15 +51,35 @@ public class PortalConnection {
             
       
       // Here's a bit of useful code, use it or delete it 
-      } catch (SQLException e) {
-          return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
-      }     
-    }
+          } catch (SQLException e) {
+              return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
+          }     
+        }
 
     // Unregister a student from a course, returns a tiny JSON document (as a String)
     public String unregister(String student, String courseCode){
-      return "{\"success\":false, \"error\":\"Unregistration is not implemented yet :(\"}";
-    }
+
+        try (PreparedStatement prst = conn.prepareStatement("DELETE FROM Registrations WHERE student = ? AND course = ?;")){
+            String stu = student;
+            String code = courseCode;
+
+            prst.setString(1,stu);
+            prst.setString(2,code);
+            int result = prst.executeUpdate();
+            
+            if(result == 0){
+                return "{\"success\":false, \"error\":\""+"No rows to delete"+"\"}";
+            }
+            return "{'success':true}";
+
+            
+      
+        // Here's a bit of useful code, use it or delete it 
+            } catch (SQLException e) {
+              return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
+            }     
+        }
+        
 
     // Return a JSON document containing lots of information about a student, it should validate against the schema found in information_schema.json
     public String getInfo(String student) throws SQLException{

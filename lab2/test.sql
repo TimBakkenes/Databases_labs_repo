@@ -1,0 +1,1 @@
+SELECT jsonb_build_object('student',idnr,'name',name) AS jsondata FROM BasicInformation WHERE idnr="1111111111";
