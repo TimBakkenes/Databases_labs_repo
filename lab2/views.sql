@@ -1,5 +1,5 @@
 CREATE VIEW BasicInformation AS
-    SELECT idnr, name, login, Students.program, branch 
+    SELECT idnr, name, login, Students.program AS program, branch 
     FROM Students LEFT JOIN StudentBranches 
     ON Students.idnr = StudentBranches.student;
 

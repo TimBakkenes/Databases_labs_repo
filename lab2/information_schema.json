@@ -31,10 +31,10 @@
       "title": "The univerity issued computer login"
     },
     "program": {
-      "type": "string",
+      "type": "string"
     },
     "branch": {
-      "anyOf":[{"type": "string"},{"type": "null"}],
+      "anyOf":[{"type": "string"},{"type": "null"}]
     },
     "finished": {
       "type": "array",
