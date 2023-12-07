@@ -23,12 +23,22 @@ public class TestPortal {
 
          prettyPrint(c.getInfo("2222222222"));  
 
+         System.out.println(c.register("2222222222", "CCC333")); 
+         System.out.println(c.register("2222222222", "CCC111")); 
+         System.out.println(c.register("2222222222", "CCC555")); 
+         System.out.println(c.register("3333333333", "CCC333")); 
+         System.out.println(c.register("3333333333", "CCC111")); 
+         System.out.println(c.register("3333333333", "CCC555")); 
+         prettyPrint(c.getInfo("2222222222")); 
+         prettyPrint(c.getInfo("\"3333333333\"")); 
+
          System.out.println("the test starts here");
 
-         System.out.println(c.unregister("2222222222", "x' OR 'a'='a")); 
+         System.out.println(c.unregister("2222222222", "x' OR 'databases'='databases")); 
          pause();
 
          prettyPrint(c.getInfo("2222222222")); 
+         prettyPrint(c.getInfo("3333333333")); 
          pause();
       
          System.out.println("End of test");

@@ -22,7 +22,7 @@ SELECT jsonb_build_object(
     'totalCredits', (SELECT totalCredits FROM PathToGraduation WHERE (student = BasicInformation.idnr)),
     'canGraduate', (SELECT qualified FROM PathToGraduation WHERE (student = BasicInformation.idnr))
     
-    ) AS jsondata FROM BasicInformation WHERE idnr='?';
+    ) AS jsondata FROM BasicInformation WHERE idnr='2222222222';
     
 
 
