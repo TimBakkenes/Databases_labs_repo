@@ -8,10 +8,31 @@ public class TestPortal {
    public static void main(String[] args) {
       try{
          PortalConnection c = new PortalConnection();
+
+         prettyPrint(c.getInfo("2222222222")); 
+         pause();
    
+         System.out.println(c.register("2222222222", "CCC555")); 
+         prettyPrint(c.getInfo("2222222222"));
+         pause();
+
+         System.out.println(c.register("2222222222", "CCC555"));
+         pause();
+
+         System.out.println(c.unregister("2222222222", "CCC555"));
+
+         prettyPrint(c.getInfo("2222222222"));
+         pause();
+         System.out.println(c.unregister("2222222222", "CCC555"));
+         pause();
+
+         System.out.println(c.register("1111111111", "CCC444")); 
+         pause();
+
+         
          // Write your tests here. Add/remove calls to pause() as desired. 
          // Use println instead of prettyPrint to get more compact output (if your raw JSON is already readable)
-   
+         /* 
          System.out.println(c.unregister("2222222222", "CCC333")); 
          pause();
 
@@ -29,7 +50,7 @@ public class TestPortal {
          pause();
 
          prettyPrint(c.getInfo("2222222222")); 
-         pause();
+         pause(); */
       
          System.out.println("End of test");
 
