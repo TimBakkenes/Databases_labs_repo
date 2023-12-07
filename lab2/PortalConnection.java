@@ -58,43 +58,16 @@ public class PortalConnection {
 
     // Unregister a student from a course, returns a tiny JSON document (as a String)
     public String unregister(String student, String courseCode){
-        /* 
-        try (PreparedStatement prst = conn.prepareStatement("DELETE FROM Registrations WHERE student = ? AND course = ?;")){
-            String stu = student;
-            String code = courseCode;
-
-            prst.setString(1,stu);
-            prst.setString(2,code);
-            int result = prst.executeUpdate();
-            
-            if(result == 0){
-                return "{\"success\":false, \"error\":\""+"No rows to delete"+"\"}";
-            }
-            return "{'success':true}";
-
-            
-      
-        // Here's a bit of useful code, use it or delete it 
-            } catch (SQLException e) {
-              return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
-            }     
-        }
-
-        */
-
+        
         String query = "DELETE FROM Registrations WHERE student = '" + student + "' AND course = '" + courseCode + "';";
         try (Statement s = conn.createStatement();){
 
-            ResultSet rs = s.executeQuery(query);
-            if(rs.next()){
+            int rs = s.executeUpdate(query);
+            if(rs > 0){
               return "{'success':true}";
             } else{
-              return "{\"success\":false, \"error\":\""+"No rows to delete"+"\"}";
+              return "{\"success\":false, \"error\":\""+"No rows to delete, student is not registered or on waitinglist"+"\"}";
             }
-              
-            
-                
-              
                 
         } catch (SQLException e) {
               return "{\"success\":false, \"error\":\""+getError(e)+"\"}";
@@ -111,28 +84,29 @@ public class PortalConnection {
         try(PreparedStatement st = conn.prepareStatement(
             // replace this with something more useful
             "SELECT jsonb_build_object(\n" + //
-                "    'student', idnr,\n" + //
-                "    'name', name,\n" + //
-                "    'login', login,\n" + //
-                "    'program', program,\n" + //
-                "    'branch', branch,\n" + //
-                "    'finished', (SELECT COALESCE(jsonb_agg(jsonb_build_object(\n" + //
-                "        'course', name,\n" + //
-                "        'code', course,\n" + //
-                "        'credits', credits,\n" + //
-                "        'grade', grade)), '[]') FROM Taken, Courses WHERE (Taken.student = BasicInformation.idnr AND Taken.course = Courses.code)),\n" + //
-                "    \n" + //
-                "    'registered', (SELECT COALESCE(jsonb_agg(jsonb_build_object(\n" + //
-                "        'course', name,\n" + //
-                "        'code', course,\n" + //
-                "        'status', status)), '[]') FROM Registrations, Courses WHERE (Registrations.student = BasicInformation.idnr AND Registrations.course = Courses.code)),\n" + //
-                "\n" + //
-                "    'seminarCourses', (SELECT seminarCourses FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
-                "    'mathCredits', (SELECT mathCredits FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
-                "    'totalCredits', (SELECT totalCredits FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
-                "    'canGraduate', (SELECT qualified FROM PathToGraduation WHERE (student = BasicInformation.idnr))\n" + //
-                "    \n" + //
-                "    ) AS jsondata FROM BasicInformation WHERE idnr=?;"
+                    "    'student', idnr,\n" + //
+                    "    'name', name,\n" + //
+                    "    'login', login,\n" + //
+                    "    'program', program,\n" + //
+                    "    'branch', branch,\n" + //
+                    "    'finished', (SELECT COALESCE(jsonb_agg(jsonb_build_object(\n" + //
+                    "        'course', name,\n" + //
+                    "        'code', course,\n" + //
+                    "        'credits', credits,\n" + //
+                    "        'grade', grade)), '[]') FROM Taken, Courses WHERE (Taken.student = BasicInformation.idnr AND Taken.course = Courses.code)),\n" + //
+                    "    \n" + //
+                    "    'registered', (SELECT COALESCE(jsonb_agg(jsonb_build_object(\n" + //
+                    "        'course', name,\n" + //
+                    "        'code', ExtendedRegistrations.course,\n" + //
+                    "        'status', status,\n" + //
+                    "        'position', position)), '[]') FROM ExtendedRegistrations, Courses WHERE (ExtendedRegistrations.student = BasicInformation.idnr AND ExtendedRegistrations.course = Courses.code)),\n" + //
+                    "\n" + //
+                    "    'seminarCourses', (SELECT seminarCourses FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
+                    "    'mathCredits', (SELECT mathCredits FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
+                    "    'totalCredits', (SELECT totalCredits FROM PathToGraduation WHERE (student = BasicInformation.idnr)),\n" + //
+                    "    'canGraduate', (SELECT qualified FROM PathToGraduation WHERE (student = BasicInformation.idnr))\n" + //
+                    "    \n" + //
+                    "    ) AS jsondata FROM BasicInformation WHERE idnr=?;"
             );){
             
             st.setString(1, student);

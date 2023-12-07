@@ -101,6 +101,13 @@ CREATE VIEW PathToGraduation AS
     SeminarCourses ON (Students.idnr = SeminarCourses.student)
     LEFT JOIN
     AggregatedRecommendedCourses ON (Students.idnr = AggregatedRecommendedCourses.student);
+
+
+    CREATE VIEW ExtendedRegistrations AS
+        SELECT Registrations.student, Registrations.course, status, position FROM
+        Registrations 
+        LEFT JOIN 
+        WaitingList ON (Registrations.student = WaitingList.student AND Registrations.course = WaitingList.course);
     
     
 
